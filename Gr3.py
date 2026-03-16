@@ -11,11 +11,11 @@ class MainWindow(QtWidgets.QDialog):
         self.ZalozBaze.clicked.connect(self.zaloz_baze)
         self.ZalozKonto.clicked.connect(self.zaloz_uzytkownika)
         self.pobierz()
-        self.cb_autor.setEditable(True)
-        self.cb_tytul.setEditable(True)
-        self.cb_gatunek.setEditable(True)
-        self.cb_rok.setEditable(True)
-        self.cb_isbn.setEditable(True)
+        self.AutorComboBox.setEditable(True)
+        self.TytulComboBox.setEditable(True)
+        self.GatunekComboBox.setEditable(True)
+        self.RokComboBox.setEditable(True)
+        self.ISBNComboBox.setEditable(True)
  
     def pobierz(self):
         print('test')
