@@ -1,3 +1,14 @@
+
+#ETO VSE
+
+#POLNAJA ZALUPA
+
+#I ETO VSE
+
+#NADO PEREDELYVAT 
+
+
+
 import sys, os, uuid
 from PyQt5 import QtWidgets, uic
  
@@ -32,9 +43,12 @@ class MainWindow(QtWidgets.QDialog):
         self_ksiazka_gatunek = self.GatunekComboBox.currentText().strip()
         self_ksiazka_rok = self.RokComboBox.currentText().strip()
         self_ksiazka_isbn = self.ISBNComboBox.currentText().strip()
-        if self_ksiazka_tytul == ' ' or self.ksiazka_autor == or self_ksiazka_isbn:
-            QMessageBox.critical(self, "Błąd")
-            return
+        #if self_ksiazka_tytul == ' ' or self.ksiazka_autor == or self_ksiazka_isbn:
+        #    QMessageBox.critical(self, "Błąd")
+        #    return
+        #plik_ksiazki_dostepne = self.LokalizacjaBazy + '\\' + self.lista_plikow
+        #if os.path.exists(plik_ksiazki_dostepne):
+        #    with open
 
     def zaloz_baze(self):
  
@@ -54,7 +68,7 @@ class MainWindow(QtWidgets.QDialog):
                     print(f'Tworze: {plik}')
 
     def zaloz_uzytkownika(self):
-        self.LokalizacjaBazy = self.te_konfig__baza.toPlainText().strip()
+        #self.LokalizacjaBazy = self.te_konfig__baza.toPlainText().strip()
         plik_uzytkownika = self.LokalizacjaBazy + '\\' + self.lista_plikow[0]
         if os.path.exists(plik_uzytkownika):
             print(plik_uzytkownika)
