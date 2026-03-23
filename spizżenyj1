@@ -1,0 +1,49 @@
+import sys, os, uuid
+from PyQt5 import QtWidgets, uic
+ 
+class MainWindow(QtWidgets.QDialog):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi(r"cw1.ui", self)
+        self.combo_autor.addItems(['Adam Mickiewicz','Henryk Sienkiewicz','Jan Brzechwa','Julisz Słowacki'])
+        self.button_zaloz_baze.clicked.connect(self.zaloz_baze)
+        self.button_zaloz_konto.clicked.connect(self.zaloz_konto)
+
+    def pobierz(self):
+        print('test')
+    def zaloz_baze(self):
+        self.lista_plikow = ['uzytkownik.txt', 'ksiazki_dostepne.txt', 'książki_wypozyczone.txt']
+        self.lok_bazy = self.plain_lokalizacja_bazy.toPlainText().strip()
+        for plik in self.lista_plikow:
+            plik = self.lok_bazy + '\\' + plik
+            if os.path.exists(plik):
+                print(f'plik istnieje {plik}')
+            elif not os.path.exists(plik):
+                with open(plik,'w') as zapis:
+                    print(f'tworze {plik}')
+    
+    def zaloz_konto(self):
+            plik_uzytkownika = self.lok_bazy + '\\' + self.lista_plikow[0]
+            if os.path.exists(plik_uzytkownika):
+                self.u_imie = self.plain_imie.toPlainText().strip()
+                self.u_nazwisko = self.plain_nazwisko.toPlainText().strip()
+                self.uid_uzytkownika = uuid.uuid4().hex
+                print(self.u_imie, self.u_nazwisko, self.uid_uzytkownika)
+                with open(plik_uzytkownika, 'r+', encoding='UTF-8') as odczyt_uzytkownik:
+                    for numer, line in enumerate(odczyt_uzytkownik):
+                        if numer >= 0:
+                            s_imie = line.split('#')[0]
+                            s_nazwisko = line.split('#')[1]
+                            if self.u_imie == s_imie:
+                                print(f'już {self.u_imie} istnieje')
+                            else:
+                                odczyt_uzytkownik.write(str(self.u_imie) + '#' + str(self.u_nazwisko)+ '#' +str(self.uid_uzytkownika) + '\n')
+                               
+    
+
+
+app = QtWidgets.QApplication(sys.argv)
+window = MainWindow()
+window.show()
+window.pobierz()
+sys.exit(app.exec_())
