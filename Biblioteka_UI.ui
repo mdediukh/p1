@@ -128,6 +128,9 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="editable">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QComboBox" name="GatunekComboBox">
     <property name="geometry">
@@ -137,6 +140,9 @@
       <width>371</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="editable">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QComboBox" name="TytulComboBox">
@@ -148,6 +154,9 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="editable">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QComboBox" name="ISBNComboBox">
     <property name="geometry">
@@ -158,6 +167,9 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="editable">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QComboBox" name="RokComboBox">
     <property name="geometry">
@@ -167,6 +179,9 @@
       <width>371</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="editable">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
