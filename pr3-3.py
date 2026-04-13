@@ -2,10 +2,6 @@ import sys, os, uuid
 from PyQt5 import QtWidgets, uic
  
 class MainWindow(QtWidgets.QDialog):
-    def accept(self):
-        pass
-    def reject(self):
-        pass
     def __init__(self):
         super().__init__()
         uic.loadUi(r"C:\Users\student\Downloads\Biblioteka_UI.ui", self)
