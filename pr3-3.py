@@ -8,7 +8,7 @@ class MainWindow(QtWidgets.QDialog):
         pass
     def __init__(self):
         super().__init__()
-        uic.loadUi(r"Biblioteka_UI.ui", self)
+        uic.loadUi(r"C:\Users\student\Downloads\Biblioteka_UI.ui", self)
         self.ZalozBaze.clicked.connect(self.zaloz_baze)
         self.ZalozKonto.clicked.connect(self.zaloz_uzytkownika)
         self.Zaloguj.clicked.connect(self.zaloguj_uzytkownika)
@@ -16,12 +16,10 @@ class MainWindow(QtWidgets.QDialog):
         self.Zwroc.clicked.connect(self.zwroc_ksiazke)
         self.Wypozycz.clicked.connect(self.wypozycz_ksiazke)
 
-        # Переменные для работы логики
-        self.путь_базы = ""
+        self.szlak = ""
         self.blokuj_sync = False 
         self.aktualny_uzytkownik = None
 
-        # Подключаем синхронизацию полей
         self.AutorComboBox.activated[str].connect(self.synchronizuj_pola)
         self.TytulComboBox.activated[str].connect(self.synchronizuj_pola)
         self.GatunekComboBox.activated[str].connect(self.synchronizuj_pola)
@@ -32,13 +30,13 @@ class MainWindow(QtWidgets.QDialog):
         print('test')
 
     def synchronizuj_pola(self, tekst):
-        if self.blokuj_sync or not tekst or not self.путь_базы:
+        if self.blokuj_sync or not tekst or not self.szlak:
             return
         
         nadawca = self.sender()
         indeks = 0 if nadawca == self.AutorComboBox else 1 if nadawca == self.TytulComboBox else 2 if nadawca == self.GatunekComboBox else 3 if nadawca == self.RokComboBox else 4
         
-        p_dostepne = self.путь_базы + '\\' + self.lista_plikow[1]
+        p_dostepne = self.szlak + '\\' + self.lista_plikow[1]
         if os.path.exists(p_dostepne):
             with open(p_dostepne, 'r', encoding='UTF-8') as f:
                 for line in f:
@@ -55,15 +53,15 @@ class MainWindow(QtWidgets.QDialog):
  
     def zaloz_baze(self):
         self.lista_plikow = ['uzytkownik.txt', 'ksiazki_dostepne.txt', 'ksiazki_wypozyczone.txt']
-        self.путь_базы = self.LokalizacjaBazy.toPlainText().strip()
+        self.szlak = self.LokalizacjaBazy.toPlainText().strip()
         self.aktualny_uzytkownik = None
         
         for plik in self.lista_plikow:
-            pelny_plik = self.путь_базы + '\\' + plik
+            pelny_plik = self.szlak + '\\' + plik
             if os.path.exists(pelny_plik):
                 print(f'plik istnieje {pelny_plik}')
             elif not os.path.exists(pelny_plik):
-                os.makedirs(self.путь_базы, exist_ok=True)
+                os.makedirs(self.szlak, exist_ok=True)
                 with open(pelny_plik,'w') as zapis:
                     print(f'tworze {pelny_plik}')
         self.odswiez_listy()
@@ -91,8 +89,8 @@ class MainWindow(QtWidgets.QDialog):
         self.uzytkownik_imie = self.Imie.toPlainText().strip()
         self.uzytkownik_nazwisko = self.Nazwisko.toPlainText().strip()
         
-        if not self.путь_базы: return
-        p_uzytk = self.путь_базы + '\\' + self.lista_plikow[0]
+        if not self.szlak: return
+        p_uzytk = self.szlak + '\\' + self.lista_plikow[0]
         if os.path.exists(p_uzytk):
             with open(p_uzytk, 'r', encoding='UTF-8') as f:
                 for line in f:
@@ -112,8 +110,8 @@ class MainWindow(QtWidgets.QDialog):
         self_ksiazka_isbn = self.ISBNComboBox.currentText().strip()
         uid_ksiazki = uuid.uuid4().hex 
         
-        if not self.путь_базы: return
-        plik_ksiazki = self.путь_базы + '\\' + self.lista_plikow[1]
+        if not self.szlak: return
+        plik_ksiazki = self.szlak + '\\' + self.lista_plikow[1]
         if os.path.exists(plik_ksiazki):
             with open(plik_ksiazki, 'a', encoding='UTF-8') as zapis:
                 zapis.write(f"{self_ksiazka_autor}#{self_ksiazka_tytul}#{self_ksiazka_gatunek}#{self_ksiazka_rok}#{self_ksiazka_isbn}#{uid_ksiazki}\n")
@@ -121,13 +119,13 @@ class MainWindow(QtWidgets.QDialog):
         self.odswiez_listy()
                 
     def odswiez_listy(self):
-        if not getattr(self, 'путь_базы', None): return
+        if not getattr(self, 'szlak', None): return
         self.blokuj_sync = True
         
         for combo in [self.AutorComboBox, self.TytulComboBox, self.GatunekComboBox, self.RokComboBox, self.ISBNComboBox, self.Tytul_2ComboBox]:
             combo.clear()
         
-        p_dostepne = self.путь_базы + '\\' + self.lista_plikow[1]
+        p_dostepne = self.szlak + '\\' + self.lista_plikow[1]
         if os.path.exists(p_dostepne):
             with open(p_dostepne, 'r', encoding='UTF-8') as f:
                 for line in f:
@@ -139,7 +137,7 @@ class MainWindow(QtWidgets.QDialog):
                         if self.RokComboBox.findText(d[3]) == -1: self.RokComboBox.addItem(d[3])
                         if self.ISBNComboBox.findText(d[4]) == -1: self.ISBNComboBox.addItem(d[4])
 
-        p_wypoz = self.путь_базы + '\\' + self.lista_plikow[2]
+        p_wypoz = self.szlak + '\\' + self.lista_plikow[2]
         if os.path.exists(p_wypoz) and getattr(self, 'aktualny_uzytkownik', None):
             with open(p_wypoz, 'r', encoding='UTF-8') as f:
                 for line in f:
@@ -155,8 +153,8 @@ class MainWindow(QtWidgets.QDialog):
             return
         tytul = self.TytulComboBox.currentText()
         if not tytul: return
-        p_dostepne = self.путь_базы + '\\' + self.lista_plikow[1]
-        p_wypozyczone = self.путь_базы + '\\' + self.lista_plikow[2]
+        p_dostepne = self.szlak + '\\' + self.lista_plikow[1]
+        p_wypozyczone = self.szlak + '\\' + self.lista_plikow[2]
         dostepne_zostaja = []
         wybrana_ksiazka = ""
         with open(p_dostepne, 'r', encoding='UTF-8') as f:
@@ -177,8 +175,8 @@ class MainWindow(QtWidgets.QDialog):
     def zwroc_ksiazke(self):
         tytul = self.Tytul_2ComboBox.currentText()
         if not tytul: return
-        p_dostepne = self.путь_базы + '\\' + self.lista_plikow[1]
-        p_wypozyczone = self.путь_базы + '\\' + self.lista_plikow[2]
+        p_dostepne = self.szlak + '\\' + self.lista_plikow[1]
+        p_wypozyczone = self.szlak + '\\' + self.lista_plikow[2]
         wypozyczone_zostaja = []
         ksiazka_do_zwrotu = ""
         with open(p_wypozyczone, 'r', encoding='UTF-8') as f:
